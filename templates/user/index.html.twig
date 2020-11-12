@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div style="margin: 30px;">
+
+{% for message in app.flashes('success') %}
+      <div class="alert alert-success">
+        {{ message }}
+      </div>
+ {% endfor %}
+ {% if users is not empty %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Prenom</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.prenom }}</td>
+        <td>{{ user.nom }}</td>
+        <td>{{ user.email }}</td>
+        <td>{% if user.status == 0 %} utilisteur simple {% elseif user.status == 1 %} éditeur {% else %} administrateur {% endif %}</td>
+        <td>
+       {# {% if is_granted('ROLE_ADMIN') %} #}
+       {% if user.status == 0 %}
+          <a href="{{ path('admin.user.edit', {id: user.id, privilege: 'editeur'}) }}" class="btn btn-secondary">Donner le privilige d'éditeur</a>
+          <a href="{{ path('admin.user.edit', {id: user.id, privilege: 'admin'}) }}" class="btn btn-secondary">Donner le privilige d'administrateur</a>
+      {% elseif user.status == 1 %}
+      <a href="{{ path('admin.user.edit', {id: user.id, privilege: 'simple'}) }}" class="btn btn-secondary">Donner le privilige d'éditeur</a>
+          <a href="{{ path('admin.user.edit', {id: user.id, privilege: 'admin'}) }}" class="btn btn-secondary">Donner le privilige d'administrateur</a>
+      {% else %}
+
+      <a href="{{ path('admin.user.edit', {id: user.id, privilege: 'simple'}) }}" class="btn btn-secondary">Donner le privilige d'éditeur</a>
+          <a href="{{ path('admin.user.edit', {id: user.id, privilege: 'editeur'}) }}" class="btn btn-secondary">Donner le privilige d'administrateur</a>
+
+      {% endif %}
+
+          <a href="{{ path('admin.user.delete', {id: user.id}) }}" class="btn btn-danger">Supprimer</a>
+          
+       {#  {% endif %} #}
+         
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+  <h2>Vous n'avez pas encore d'utilisateur dans la base de données</a>
+  {% endif %}
+  <div>
+  	<a href="{{ path('admin.create.user') }}" class="btn btn-secondary">Ajouter un utilisateur</a>
+
+  </div>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="container">
+    <h1 class="display-4">{{article.titre}}</h1>
+    <h3>Publié le {{article.datePub|date("m/d/Y")}} par {{article.user.prenom}} {{article.user.nom}} dans les catégories {% for categorie in article.categories %} {{categorie.nom}} {% endfor %}</h3>
+    <p>{{article.contenu | nl2br}} </p>
+    <!-- Pagination -->
+        <ul class="pagination justify-content-center mb-4">
+        {% if articlePrecedent is not null %}
+          <li class="page-item">
+            <a class="page-link" href="{{ path('editeur.show.article', {id: articlePrecedent.id}) }}">&larr; Précédent</a>
+          </li>
+        {% endif %}
+         {% if articleSuivant is not null %}
+
+          <li class="page-item">
+            <a class="page-link" href="{{ path('editeur.show.article', {id: articleSuivant.id}) }}">Suivant &rarr;</a>
+          </li>
+         {% endif %}
+        </ul>
+</div>
+
+
+{% endblock %}
+

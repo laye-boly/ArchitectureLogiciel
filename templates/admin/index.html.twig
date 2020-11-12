@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="container">
+  <ul class="list-group">
+    {% if is_granted("ROLE_ADMIN") %}
+    <li class="list-group-item"><a href="{{path('admin.user.index')}}">Gérer les utilsateurs</a></li>
+    {% endif %}
+    <li class="list-group-item"><a href="{{path('editeur.article.index')}}">Gérer les articles</a></li>
+    <li class="list-group-item"><a href="{{path('editeur.categorie.index')}}">Gérer les catégories</a></li>
+ </ul>
+</div>
+
+
+{% endblock %}
+

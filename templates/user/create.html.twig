@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div style="margin: 30px;">
+
+{% for message in app.flashes('error') %}
+      <div class="alert alert-danger">
+        {{ message }}
+      </div>
+ {% endfor %}
+
+ {{form_start(form)}}
+    {{form_row(form.prenom)}}
+    {{form_row(form.nom)}}
+    {{form_row(form.email)}}
+    {{form_row(form.password)}}
+    {{form_row(form.passwordconf)}}
+    {{form_row(form.submit)}}
+ {{form_end(form)}}
+
+ </div>
+{% endblock %}
+

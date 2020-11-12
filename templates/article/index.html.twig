@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div style="margin: 30px;">
+
+{% for message in app.flashes('success') %}
+      <div class="alert alert-success">
+        {{ message }}
+      </div>
+ {% endfor %}
+ {% if articles is not empty %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>titre</th>
+        <th>auteur</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for article in articles %}
+      <tr>
+        <td>{{ article.titre }}</td>
+        <td>{{ article.user.nom }} : {{article.user.email }}</td>
+        <td>
+       {% if is_granted('ROLE_EDITEUR') %}
+       {% if article.user.id == app.user.id  or app.user.status == 2 %} 
+        <a href="{{ path('editeur.article.edit', {id: article.id}) }}" class="btn btn-secondary">Modifier</a>
+          <a href="{{ path('editeur.article.delete', {id: article.id}) }}" class="btn btn-secondary">Supprimer</a>
+      {% endif %} 
+      
+      
+          
+         {% endif %} 
+         
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+  <h2>Vous n'avez pas encore d'articles dans la base de données</a>
+  {% endif %}
+  <div>
+    <a href="{{ path('editeur.article.create') }}" class="btn btn-secondary">Ajouter un article</a>
+
+  </div>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div style="margin: 30px;">
+
+{% for message in app.flashes('success') %}
+      <div class="alert alert-success">
+        {{ message }}
+      </div>
+ {% endfor %}
+ {% if categories is not empty %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for categorie in categories %}
+      <tr>
+        <td>{{ categorie.nom }}</td>
+        <td>
+       {# {% if is_granted('ROLE_ADMIN') %} #}
+          <a href="{{ path('editeur.categorie.edit', {id: categorie.id}) }}" class="btn btn-secondary">Editer</a>
+          <a href="{{ path('editeur.categorie.delete', {id: categorie.id}) }}" class="btn btn-danger">Supprimer</a>
+          
+       {#  {% endif %} #}
+         
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+  <h2>Vous n'avez pas encore de catégorie</a>
+  {% endif %}
+  <div>
+  	<a href="{{ path('editeur.categorie.create') }}" class="btn btn-secondary">Ajouter une categorie</a>
+
+  </div>
+  </div>
+{% endblock %}
+

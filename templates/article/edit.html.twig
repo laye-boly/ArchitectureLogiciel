@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div style="margin: 30px;">
+ {{form_start(form)}}
+    {{form_row(form.titre)}}
+    {{form_row(form.categories)}}
+    {{form_row(form.contenu)}}
+    {{form_row(form.submit)}}
+
+ {{form_end(form)}}
+
+ </div>
+{% endblock %}
+
