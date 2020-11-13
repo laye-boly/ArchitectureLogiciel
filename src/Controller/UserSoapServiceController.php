@@ -43,19 +43,15 @@ class UserSoapServiceController extends AbstractController
       $wsdl = $autodiscover->generate();
       $wsdl->dump("../public/webservice.wsdl");
 
-      // $soap = new Server("http://127.0.0.1:8000/index.php/soap?wsdl");
-      // $soap->setClass(UserSoapService::class);
-      // $soap->handle();
-
       $soapServer = new \SoapServer('../public/webservice.wsdl');
       $soapServer->setObject($userSoapService);
 
       $response = new Response();
       $response->headers->set('Content-Type', 'text/xml; charset=ISO-8859-1');
 
-      // ob_start();
+      ob_start();
       $soapServer->handle();
-      // $response->setContent(ob_get_clean());
+      $response->setContent(ob_get_clean());
 
       return $response;
     

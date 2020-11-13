@@ -10,6 +10,7 @@
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
+        "econea/nusoap": "^0.9.10",
         "jms/serializer-bundle": "^3.7",
         "knplabs/knp-paginator-bundle": "^5.3",
         "laminas/laminas-soap": "^2.8",

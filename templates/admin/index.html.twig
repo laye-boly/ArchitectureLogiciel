@@ -7,6 +7,12 @@
     {% endif %}
     <li class="list-group-item"><a href="{{path('editeur.article.index')}}">Gérer les articles</a></li>
     <li class="list-group-item"><a href="{{path('editeur.categorie.index')}}">Gérer les catégories</a></li>
+     
+     <li class="list-group-item"><a href="{{path('user.compte.update', {'id': app.user.id})}}">Mon profile</a></li>
+
+     {% if is_granted("ROLE_ADMIN") %}
+    <li class="list-group-item"><a href="{{path('admin.jeton.index')}}">Gérer les jetons d'administrations</a></li>
+    {% endif %}
  </ul>
 </div>
 

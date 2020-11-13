@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Jeton;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,6 +62,44 @@ class UserController extends AbstractController
 
         return $this->render('user/create.html.twig', [
             "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/edit/user/compte{id}", name="user.compte.update")
+     */
+
+    public function edit(Request $request, User $user){
+        
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+       
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            if($user->getPassword() !== $user->getPasswordconf()){
+               
+                $this->addFlash('error', 'Vos mots de passe sont différents');
+                return $this->redirectToRoute('user.compte.update');
+
+            }
+
+            $user->setPassword($this->encoder->encodePassword(
+                $user,
+                $user->getPassword()
+            ));
+                       
+            
+            $this->em->flush();
+    
+            return $this->redirectToRoute('admin.user.index');
+            
+        }
+
+         $jetons = $this->em->getRepository(Jeton::class)->findOneBy(['user' => $user]);
+         // dd($jetons);
+        return $this->render('user/edit.html.twig', [
+            "form" => $form->createView(),
+            "jetons" => $jetons
         ]);
     }
 

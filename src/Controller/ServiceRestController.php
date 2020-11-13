@@ -35,19 +35,57 @@ class ServiceRestController extends AbstractController
 
     public function list(Request $request){
     	$categorie = $request->query->get('categorie');
-    	$articles = null;
+    	$articlesTab = array();
     	// dd($categorie);
     	if($categorie !== null ){
     		if($categorie == "all" ){
     			//articles regroupé en catégorie
-    			$articles = $this->em->getRepository(Categorie::class)->findAll();
+    			$categories = $this->em->getRepository(Categorie::class)->findAll();
+          foreach ($categories as $categorie) {
+            $articles = $categorie->getArticles();
+            if(!$articles->isEmpty()){
+              foreach ($articles as $article) {
+                $articleTab['id'] = $article->getId();
+                $articleTab['titre'] = $article->getTitre();
+                $articleTab['contenu'] = $article->getContenu();
+                $articleTab['prenomAuteur'] = $article->getUser()->getPrenom();
+                $articleTab['nomAuteur'] = $article->getUser()->getNom();
+                $articleTab['EmailAuteur'] = $article->getUser()->getEmail();
+                $articlesTab[] = $articleTab;
+              }
+            }
+          }
     		}else if($categorie !== null && $categorie !== "all"){
     			//articles appartenant à une categorie fourni par le user
     			$categorie = $this->em->getRepository(Categorie::class)->findOneBy(['nom' => $categorie]);
     			$articles = $categorie->getArticles();
+
+          if(!$articles->isEmpty()){
+              foreach ($articles as $article) {
+                $articleTab['id'] = $article->getId();
+                $articleTab['titre'] = $article->getTitre();
+                $articleTab['contenu'] = $article->getContenu();
+                $articleTab['prenomAuteur'] = $article->getUser()->getPrenom();
+                $articleTab['nomAuteur'] = $article->getUser()->getNom();
+                $articleTab['EmailAuteur'] = $article->getUser()->getEmail();
+                $articlesTab[] = $articleTab;
+              }
+            }
     		}
     	}else {
+        // Tous les articles
     		$articles = $this->repository->findAll();
+        if($articles){
+              foreach ($articles as $article) {
+                $articleTab['id'] = $article->getId();
+                $articleTab['titre'] = $article->getTitre();
+                $articleTab['contenu'] = $article->getContenu();
+                $articleTab['prenomAuteur'] = $article->getUser()->getPrenom();
+                $articleTab['nomAuteur'] = $article->getUser()->getNom();
+                $articleTab['EmailAuteur'] = $article->getUser()->getEmail();
+                $articlesTab[] = $articleTab;
+              }
+            }
     	}
     	
        
@@ -66,13 +104,13 @@ class ServiceRestController extends AbstractController
 
         if($request->query->get('format') == "json"){
 
-          $data =  $this->serializer->serialize($articles, 'json',  [
+          $data =  $this->serializer->serialize($articlesTab, 'json',  [
              'enable_max_depth' => true]);
           $response = new Response($data);
           $response->headers->set('Content-Type', 'application/json');
         }
         else{
-        	$data =  $this->serializer->serialize($articles, 'xml');
+        	$data =  $this->serializer->serialize($articlesTab, 'xml');
 
           $response = new Response($data);
           $response->headers->set('Content-Type', 'application/xml');

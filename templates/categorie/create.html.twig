@@ -2,7 +2,11 @@
 {% block body %}
 <div style="margin: 30px;">
  {{form_start(form)}}
-    {{form_row(form.nom)}}
+ 	<div class="form-group">
+ 	{{ form_label(form.nom, "Le nom de la catégorie") }}
+ 	{{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+ </div> 
+    
     {{form_row(form.submit)}}
  {{form_end(form)}}
 

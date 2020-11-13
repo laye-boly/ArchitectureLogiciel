@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div style="margin: 30px;">
+
+{% for message in app.flashes('success') %}
+      <div class="alert alert-success">
+        {{ message }}
+      </div>
+ {% endfor %}
+ {% if jetons is not empty %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>jeton</th>
+        <th>Type de Jeton</th>
+        <th>Utilisateurs associé</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for jeton in jetons %}
+      <tr>
+        <td>{{ jeton.nom }}</td>
+        <td>{{ jeton.type}}</td>
+        <td>{{ jeton.user.prenom }} {{ jeton.user.nom }} : {{ jeton.user.email }}</td>
+        <td><a href="{{ path('admin.jeton.delete', {id: jeton.id}) }}" class="btn btn-danger">Supprimer le jetonr</a></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+  <h2>Vous n'avez pas encore créer de jetons</a>
+  {% endif %}
+  <div>
+  	<a href="{{ path('admin.create.jeton') }}" class="btn btn-secondary">Générer un jeton</a>
+
+  </div>
+  </div>
+{% endblock %}
+

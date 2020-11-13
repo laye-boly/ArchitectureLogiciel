@@ -58,9 +58,16 @@ class User implements UserInterface
      */
     private $status;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Jeton::class, mappedBy="user", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $jetons;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->jetons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,4 +226,36 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Jeton[]
+     */
+    public function getJetons(): Collection
+    {
+        return $this->jetons;
+    }
+
+    public function addJeton(Jeton $jeton): self
+    {
+        if (!$this->jetons->contains($jeton)) {
+            $this->jetons[] = $jeton;
+            $jeton->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJeton(Jeton $jeton): self
+    {
+        if ($this->jetons->removeElement($jeton)) {
+            // set the owning side to null (unless already changed)
+            if ($jeton->getUser() === $this) {
+                $jeton->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }
